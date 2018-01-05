@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 고객정보 처리 SQL -->
+<mapper namespace="com.sc.web5.board.dao.BoardMapper">
+	<insert id="insertBoard" parameterType="board">
+  		insert into
+  		board3(
+  			boardnum
+  			,id
+  			,title
+  			,content
+  			,originalfile
+  			,savedfile
+  		)values(
+  			board3_seq.nextval
+  			,#{id}
+  			,#{title}
+  			,#{content}
+  			,#{originalfile}
+  			,#{savedfile}
+  		)
+  	</insert>
+  	
+  	<select id="selectBoardAll" resultType="board">
+  		select
+  			boardnum
+  			,id
+  			,title
+  			,content
+  			,to_char(inputdate, 'yyyy-MM-dd') inputdate
+  			,hits
+  		from
+  			board3
+  		order by 
+  			boardnum desc
+  	</select>
+  	
+  	<select id="selectBoard" resultType="board">
+  		select *
+  		from
+  			board3
+  		where boardnum = #{boardnum}
+  	</select>
+  	
+  	<update id="updateHits">
+  		update board3
+  		set hits = hits + 1
+  		where boardnum = #{boardnum}
+  	</update>
+  	
+  	<delete id="deleteBoard" parameterType="board">
+  		delete from board3
+  		where boardnum = #{boardnum}
+  		and (id = #{id} or #{id} = 'admin')
+  	</delete>
+  	
+  	<update id="updateBoard" parameterType="board">
+  		update board3
+  		set title = #{title}
+  		,content =#{content}
+  		where boardnum = #{boardnum} and (id = #{id} or #{id} = 'admin')
+  	</update>
+</mapper>

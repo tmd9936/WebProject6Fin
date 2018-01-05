@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.sc.web5" />
+	
+	<!-- 인터셉터 등록 -->
+	<!-- LoginInterceptor 클래스 파일을 bean에 등록 -->
+	<beans:bean id="loginInterceptor" class="com.sc.web5.common.interceptor.LoginInterceptor"></beans:bean>
+	
+	<!-- 인터셉터 설정 --><!-- 다른상황도 쓰는데 예를들면 등급같은 경우에도 사용됨 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- mapping에 RequestMapping주소를 적어주면 됨 -->
+			<mvc:mapping path="/customer/updateForm"/>
+			<!-- update를 넣는 이유는 session이 만료되고 나서 상황에서 update를 하는 것을 막기위한것 -->
+			<mvc:mapping path="/customer/update"/>
+			<!-- 참조할 빈을 ref(reference)를 사용해서 참조합 -->
+			<mvc:mapping path="/board/writeForm"/>
+			<mvc:mapping path="/board/write"/>
+			<beans:ref bean="loginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	
+</beans:beans>

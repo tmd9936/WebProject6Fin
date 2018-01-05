@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 고객정보 처리 SQL -->
+<mapper namespace="com.sc.web5.customer.dao.CustomerMapper">
+	<!-- 회원 찾기 저거 속성하나하나 다 쓴이유가 중복확인만 아니라 나중에 유저 update에서도 쓰려고 다 써놈 -->
+	<select id="searchCustomerOne" parameterType="string" resultType="customer">
+		select
+			custid
+			,password
+			,name
+			,email
+			,division
+			,idno
+			,address
+		from
+			customer
+		where
+			custid = #{custid}
+	</select>
+	
+	<insert id="joinCustomer" parameterType="customer">
+		insert into 
+		customer(
+			custid
+			,password
+			,name
+			,email
+			,division
+			,idno
+			,address
+		)values(
+			#{custid}
+			,#{password}
+			,#{name}
+			,#{email}
+			,#{division}
+			,#{idno}
+			,#{address}
+		)
+	</insert>
+
+	<update id="updateCustomer" parameterType="customer">
+		update customer
+		set password = #{password}
+			,name = #{name}
+			,email = #{email}
+			,division = #{division}
+			,address = #{address}
+		where custid = #{custid}
+	</update>
+
+</mapper>
